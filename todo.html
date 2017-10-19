@@ -1,0 +1,50 @@
+<html>
+<head>
+</head>
+<body>
+<form id="form1">
+    <input type="text" id="todoInput" placeholder="Task name here">
+    <input type="submit" value="新增"/>
+</form>
+<ul id="task-list">
+</ul>
+<script src="jquery-2.1.1.js"></script>
+<script type="text/javascript">
+    var todoList = [];
+
+    $(function() {
+        showTodoList();
+
+        $("#form1").on("submit", function(e) {
+            e.preventDefault();
+            var todoToAdd = $("#todoInput").val();
+
+            if(todoToAdd) {
+                todoList.push(todoToAdd);
+
+                $("#todoInput").val("");
+                showTodoList();
+            }
+        });
+    });
+
+    function showTodoList() {
+        $("#task-list").empty();
+
+        for(var i=0; i<todoList.length; i++) {
+            var item = $("<li><span id='item" + i + "'>" + todoList[i] + "</span><input type='button' value='删除'></li>");
+            item.on("click", function() {
+                var itemId = $(this).find("span").attr("id");
+                var index = itemId.substring(4);
+
+                todoList.splice(index, 1);
+                $(this).remove();
+
+                showTodoList();
+            });
+            $("#task-list").append(item);
+        }
+    }
+</script>
+</body>
+</html>
